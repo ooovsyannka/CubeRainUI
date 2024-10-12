@@ -5,19 +5,12 @@ using UnityEngine;
 
 public class CubeDetector : MonoBehaviour
 {
-    private Rigidbody _rigidbody;
     private bool _isCollision;
 
     public event Action Collided;
 
-    private void Awake()
-    {
-        _rigidbody = GetComponent<Rigidbody>();
-    }
-
     private void OnEnable()
     {
-        _rigidbody.velocity = Vector3.zero;
         _isCollision = false;
     }
 

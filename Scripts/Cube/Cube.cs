@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(CubeRenderer), typeof(CubeDetector))]
+[RequireComponent(typeof(CubeRenderer), typeof(CubeDetector), typeof(Rigidbody))]
 
 public class Cube : MonoBehaviour
 {
@@ -12,12 +12,15 @@ public class Cube : MonoBehaviour
     private WaitForSeconds _waitForSeconds;
     private CubeDetector _detector;
     private SpawnerBomb _spawnerBomb;
+    private Rigidbody _rigidbody;
 
     public event Action<Cube> Died;
 
     private void Awake()
     {
         _detector = GetComponent<CubeDetector>();
+        _rigidbody = GetComponent<Rigidbody>();
+        _rigidbody.velocity = Vector3.zero;
     }
 
     private void OnEnable()
