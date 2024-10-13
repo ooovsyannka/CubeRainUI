@@ -15,13 +15,13 @@ public class Pool<T> : MonoBehaviour where T : MonoBehaviour
         }
     }
 
-    public bool TryGetPoolObject(out T t)
+    public bool TryGetPoolObject(out T desiredObject)
     {
-        t = null;
+        desiredObject = null;
 
         if (_pool.Count != 0)
         {
-            t = _pool.Dequeue();
+            desiredObject = _pool.Dequeue();
 
             return true;
         }
@@ -29,9 +29,9 @@ public class Pool<T> : MonoBehaviour where T : MonoBehaviour
         return false;
     }
 
-    public void AddObjectinPool(T t)
+    public void AddObjectinPool(T returnedObject)
     {
-        _pool.Enqueue(t);
+        _pool.Enqueue(returnedObject);
     }
 
     public int GetActiveCountObject()

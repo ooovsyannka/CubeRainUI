@@ -6,16 +6,18 @@ public class Bomb : MonoBehaviour
 {
     [SerializeField] private float _liveTime;
 
-    public event Action<Bomb> Died ;
+    public event Action<Bomb> Died;
 
     private void OnEnable()
     {
-        StartCoroutine(LiveDuretion());
+        StartCoroutine(LiveDuration());
     }
 
-    private IEnumerator LiveDuretion()
+    private IEnumerator LiveDuration()
     {
-        yield return new WaitForSeconds(_liveTime);
+        WaitForSeconds waitTime = new WaitForSeconds(_liveTime);
+
+        yield return waitTime;
 
         Died?.Invoke(this);
         gameObject.SetActive(false);

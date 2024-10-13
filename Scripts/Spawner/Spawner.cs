@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Spawner<T> : MonoBehaviour where T : MonoBehaviour
+public class Spawner<T> where T : MonoBehaviour
 {
     private Pool<T> _pool = new Pool<T>();
 
@@ -11,12 +11,12 @@ public class Spawner<T> : MonoBehaviour where T : MonoBehaviour
         _pool.CreateObject(prefab, maxCount);
     }
 
-    public bool TrySpawn(Vector3 spawnPosition, out T t)
+    public bool TrySpawn(Vector3 spawnPosition, out T spawnableObject)
     {
-        if (_pool.TryGetPoolObject(out t))
+        if (_pool.TryGetPoolObject(out spawnableObject))
         {
-            t.gameObject.SetActive(true);
-            t.transform.position = spawnPosition;
+            spawnableObject.gameObject.SetActive(true);
+            spawnableObject.transform.position = spawnPosition;
             ActiveObject++;
 
             return true;
@@ -25,9 +25,9 @@ public class Spawner<T> : MonoBehaviour where T : MonoBehaviour
         return false;
     }
 
-    public void ReturnObjectInPool(T t)
+    public void ReturnObjectInPool(T returnedObject)
     {
-        _pool.AddObjectinPool(t);
+        _pool.AddObjectinPool(returnedObject);
         ActiveObject--;
     }
 }

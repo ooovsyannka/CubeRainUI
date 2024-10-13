@@ -56,7 +56,7 @@ public class SpawnerCube : MonoBehaviour
         float division = 2f;
         float randomPositionX = GetRandomNumber(0, _spawnPosition.localScale.x / division);
         float randomPositionZ = GetRandomNumber(0, _spawnPosition.localScale.z / division);
-        float maxHeight = 20;
+        float maxHeight = 25;
         float height = _spawnPosition.position.y + maxHeight;
 
         return new Vector3(randomPositionX, height, randomPositionZ);
