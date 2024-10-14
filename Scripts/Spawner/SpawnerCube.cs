@@ -8,37 +8,30 @@ public class SpawnerCube : MonoBehaviour
     [SerializeField] private Cube _cubePrefab;
     [SerializeField] private Transform _spawnPosition;
     [SerializeField] private SpawnerBomb _spawnBomb;
-    [SerializeField] private int _maxCount;
     [SerializeField] private float _delay;
 
     private Spawner<Cube> _spawner;
     private SpawnerObjectCounter _counter;
-    private bool _isWork = true;
 
     private void Awake()
     {
-        _spawner = new Spawner<Cube>(_cubePrefab, _maxCount);
         _counter = GetComponent<SpawnerObjectCounter>();
+        _spawner = new Spawner<Cube>(_cubePrefab, _counter);
     }
 
     private void Start()
     {
-        _counter.GetCountCreateObject(_maxCount);
         StartCoroutine(SpawnDelay());
     }
 
     private IEnumerator SpawnDelay()
     {
-        while (_isWork != false)
+        while (enabled)
         {
-            if (_spawner.TrySpawn(GetrandomSpawnPosition(), out Cube cube))
-            {
-                cube.GetSpawnerBomb(_spawnBomb);
-                cube.Died += ReturnCubeInPool;
+            Cube cube = _spawner.Spawn(GetrandomSpawnPosition());
 
-                _counter.AddCountSpawn();
-                _counter.ChangeActiveObjectCount(_spawner.ActiveObject);
-            }
+            cube.GetSpawnerBomb(_spawnBomb);
+            cube.Died += ReturnCubeInPool;
 
             yield return new WaitForSeconds(_delay);
         }
@@ -48,7 +41,6 @@ public class SpawnerCube : MonoBehaviour
     {
         _spawner.ReturnObjectInPool(cube);
         cube.Died -= ReturnCubeInPool;
-        _counter.ChangeActiveObjectCount(_spawner.ActiveObject);
     }
 
     private Vector3 GetrandomSpawnPosition()

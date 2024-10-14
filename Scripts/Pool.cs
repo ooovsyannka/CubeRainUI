@@ -5,37 +5,30 @@ public class Pool<T> : MonoBehaviour where T : MonoBehaviour
 {
     private Queue<T> _pool = new Queue<T>();
 
-    public void CreateObject(T prefab, int maxLength)
+    public int CreateObjectCount { get; private set; }
+
+    public T GetObject(T prefab)
     {
-        for (int i = 0; i < maxLength; i++)
+        if (_pool.Count > 0)
         {
-            T t = Instantiate(prefab);
-            _pool.Enqueue(t);
-            t.gameObject.SetActive(false);
-        }
-    }
-
-    public bool TryGetPoolObject(out T desiredObject)
-    {
-        desiredObject = null;
-
-        if (_pool.Count != 0)
-        {
-            desiredObject = _pool.Dequeue();
-
-            return true;
+            return _pool.Dequeue();
         }
 
-        return false;
+        return CreateObject(prefab);
     }
 
-    public void AddObjectinPool(T returnedObject)
+    public void AddObject(T returnedObject)
     {
         _pool.Enqueue(returnedObject);
     }
-
-    public int GetActiveCountObject()
+    
+    private T CreateObject(T prefab)
     {
-        return _pool.Count;
+        T newObject = Instantiate(prefab);
+        newObject.gameObject.SetActive(false);
+
+        CreateObjectCount++;
+
+        return newObject;
     }
 }

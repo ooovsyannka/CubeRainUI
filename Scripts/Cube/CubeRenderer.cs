@@ -1,16 +1,16 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(Renderer), typeof(CubeDetector))]
+[RequireComponent(typeof(Renderer), typeof(CubeCollision))]
 
 public class CubeRenderer : MonoBehaviour
 {
-    private CubeDetector _detector;
+    private CubeCollision _detector;
     private Renderer _renderer;
 
     private void Awake()
     {
         _renderer = GetComponent<Renderer>();
-        _detector = GetComponent<CubeDetector>();
+        _detector = GetComponent<CubeCollision>();
     }
 
     private void OnEnable()

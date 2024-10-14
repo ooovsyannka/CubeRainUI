@@ -1,27 +1,40 @@
 ﻿using System;
 using UnityEngine;
 
-public class SpawnerObjectCounter : MonoBehaviour 
+public class SpawnerObjectCounter : MonoBehaviour
 {
     private int _countSpawned;
-    
+    private int _activeObjectCount;
+    private int _createObjectCount;
+
     public event Action<int> CreatedObject;
     public event Action<int> ChanchedActiveObjectCount;
     public event Action<int> ChangeCreateObjectCount;
 
-    public void AddCountSpawn()
+    public void AddCountSpawnedObject()
     {
         _countSpawned++;
         CreatedObject?.Invoke(_countSpawned);
     }
 
-    public void ChangeActiveObjectCount(int count)
+    public void AddActiveObjectCount()
     {
-        ChanchedActiveObjectCount?.Invoke(count);
+        _activeObjectCount++;
+        ChanchedActiveObjectCount?.Invoke(_activeObjectCount);
     }
 
-    public void GetCountCreateObject(int count)
+    public void RemoveActiveObjectCount()
     {
-        ChangeCreateObjectCount?.Invoke(count);
+        _activeObjectCount--;
+        ChanchedActiveObjectCount?.Invoke(_activeObjectCount);
+    }
+
+    public void TryChangeCountCreateObject(int createObjectCount)
+    {
+        if (_createObjectCount < createObjectCount)
+        {
+            _createObjectCount = createObjectCount;
+            ChangeCreateObjectCount?.Invoke(_createObjectCount);
+        }
     }
 }

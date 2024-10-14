@@ -3,31 +3,32 @@
 public class Spawner<T> where T : MonoBehaviour
 {
     private Pool<T> _pool = new Pool<T>();
+    private T _prefab;
+    private SpawnerObjectCounter _counter;
 
-    public int ActiveObject { get; private set; }
-
-    public Spawner(T prefab, int maxCount)
+    public Spawner(T prefab, SpawnerObjectCounter counter)
     {
-        _pool.CreateObject(prefab, maxCount);
+        _prefab = prefab;
+        _counter = counter;
     }
 
-    public bool TrySpawn(Vector3 spawnPosition, out T spawnableObject)
+    public T Spawn(Vector3 spawnPosition)
     {
-        if (_pool.TryGetPoolObject(out spawnableObject))
-        {
-            spawnableObject.gameObject.SetActive(true);
-            spawnableObject.transform.position = spawnPosition;
-            ActiveObject++;
+        T spawnableObject = _pool.GetObject(_prefab);
 
-            return true;
-        }
+        spawnableObject.gameObject.SetActive(true);
+        spawnableObject.transform.position = spawnPosition;
 
-        return false;
+        _counter.AddActiveObjectCount();
+        _counter.AddCountSpawnedObject();
+        _counter.TryChangeCountCreateObject(_pool.CreateObjectCount);
+
+        return spawnableObject;
     }
 
     public void ReturnObjectInPool(T returnedObject)
     {
-        _pool.AddObjectinPool(returnedObject);
-        ActiveObject--;
+        _pool.AddObject(returnedObject);
+        _counter.RemoveActiveObjectCount();
     }
 }

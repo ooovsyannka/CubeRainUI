@@ -3,7 +3,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider), typeof(Rigidbody))]
 
-public class CubeDetector : MonoBehaviour
+public class CubeCollision : MonoBehaviour
 {
     private bool _isCollision;
 
